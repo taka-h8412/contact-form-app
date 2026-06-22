@@ -88,4 +88,11 @@ class ContactController extends Controller
 
         return new ContactResource($contact);
     }
+
+    public function destroy(Contact $contact)
+    {
+        $contact->delete();
+
+        return response()->json(null, 204);
+    }
 }

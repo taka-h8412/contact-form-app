@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\IndexContactRequest;
 use App\Http\Requests\Api\V1\StoreContactRequest;
+use App\Http\Requests\Api\V1\UpdateContactRequest;
 use App\Http\Resources\Api\V1\ContactResource;
 use App\Models\Contact;
 
@@ -66,6 +67,23 @@ class ContactController extends Controller
 
     public function show(Contact $contact)
     {
+        $contact->load(['category', 'tags']);
+
+        return new ContactResource($contact);
+    }
+
+    public function update(UpdateContactRequest $request, Contact $contact)
+    {
+        $validated = $request->validated();
+
+        $tagIds = $validated['tag_ids'] ?? [];
+
+        unset($validated['tag_ids']);
+
+        $contact->update($validated);
+
+        $contact->tags()->sync($tagIds);
+
         $contact->load(['category', 'tags']);
 
         return new ContactResource($contact);

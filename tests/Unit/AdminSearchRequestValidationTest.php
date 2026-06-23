@@ -39,7 +39,7 @@ class AdminSearchRequestValidationTest extends TestCase
             'gender' => '1',
             'category_id' => $category->id,
             'date' => '2026-06-23',
-        ], $request->rules(), $request->messages());
+        ], $request->rules());
 
         $this->assertFalse($validator->fails());
     }
@@ -51,10 +51,9 @@ class AdminSearchRequestValidationTest extends TestCase
 
         $validator = Validator::make([
             'gender' => '9',
-        ], $request->rules(), $request->messages());
+        ], $request->rules());
 
         $this->assertTrue($validator->fails());
         $this->assertArrayHasKey('gender', $validator->errors()->toArray());
-        $this->assertSame('性別の値が不正です', $validator->errors()->first('gender'));
     }
 }

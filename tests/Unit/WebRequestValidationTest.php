@@ -89,7 +89,7 @@ class WebRequestValidationTest extends TestCase
         $this->assertSame('お問い合わせ内容を入力してください', $validator->errors()->first('detail'));
     }
 
-    // 形式不正・存在しないカテゴリ・文字数超過でバリデーションエラーになることを確認
+    // 不正な値・存在しないカテゴリ・文字数超過でバリデーションエラーになることを確認
     public function test_store_contact_request_invalid_values_fail_validation(): void
     {
         $request = new StoreContactRequest();
@@ -149,6 +149,20 @@ class WebRequestValidationTest extends TestCase
         $this->assertSame('タグ名を入力してください', $validator->errors()->first('name'));
     }
 
+    // タグ名が50文字を超える場合、バリデーションエラーになることを確認
+    public function test_store_tag_request_name_over_max_length_fail_validation(): void
+    {
+        $request = new StoreTagRequest();
+
+        $validator = Validator::make([
+            'name' => str_repeat('あ', 51),
+        ], $request->rules(), $request->messages());
+
+        $this->assertTrue($validator->fails());
+        $this->assertArrayHasKey('name', $validator->errors()->toArray());
+        $this->assertSame('タグ名は50文字以内で入力してください', $validator->errors()->first('name'));
+    }
+
     // タグ名が重複している場合に、uniqueエラーになることを確認
     public function test_store_tag_request_duplicate_name_fail_validation(): void
     {
@@ -165,20 +179,6 @@ class WebRequestValidationTest extends TestCase
         $this->assertTrue($validator->fails());
         $this->assertArrayHasKey('name', $validator->errors()->toArray());
         $this->assertSame('そのタグ名は既に使用されています', $validator->errors()->first('name'));
-    }
-
-    // タグ名が50文字を超える場合、バリデーションエラーになることを確認
-    public function test_store_tag_request_name_over_max_length_fail_validation(): void
-    {
-        $request = new StoreTagRequest();
-
-        $validator = Validator::make([
-            'name' => str_repeat('あ', 51),
-        ], $request->rules(), $request->messages());
-
-        $this->assertTrue($validator->fails());
-        $this->assertArrayHasKey('name', $validator->errors()->toArray());
-        $this->assertSame('タグ名は50文字以内で入力してください', $validator->errors()->first('name'));
     }
 
     /*

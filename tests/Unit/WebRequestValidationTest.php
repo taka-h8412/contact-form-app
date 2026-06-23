@@ -31,7 +31,7 @@ class WebRequestValidationTest extends TestCase
     */
 
     // 問い合わせフォームの正常データが、バリデーションを通ることを確認
-    public function test_store_contact_request_valid_data_passes_validation(): void
+    public function test_store_contact_request_valid_data_pass_validation(): void
     {
         $category = $this->createCategory();
 
@@ -124,7 +124,7 @@ class WebRequestValidationTest extends TestCase
     */
 
     // タグ名の正常データが、バリデーションを通ることを確認
-    public function test_store_tag_request_valid_data_passes_validation(): void
+    public function test_store_tag_request_valid_data_pass_validation(): void
     {
         $request = new StoreTagRequest();
 
@@ -136,7 +136,7 @@ class WebRequestValidationTest extends TestCase
     }
 
     // タグ名が空の場合に、requiredエラーになることを確認
-    public function test_store_tag_request_name_required_fails_validation(): void
+    public function test_store_tag_request_name_required_fail_validation(): void
     {
         $request = new StoreTagRequest();
 
@@ -150,7 +150,7 @@ class WebRequestValidationTest extends TestCase
     }
 
     // タグ名が重複している場合に、uniqueエラーになることを確認
-    public function test_store_tag_request_duplicate_name_fails_validation(): void
+    public function test_store_tag_request_duplicate_name_fail_validation(): void
     {
         Tag::create([
             'name' => '質問',
@@ -165,6 +165,20 @@ class WebRequestValidationTest extends TestCase
         $this->assertTrue($validator->fails());
         $this->assertArrayHasKey('name', $validator->errors()->toArray());
         $this->assertSame('そのタグ名は既に使用されています', $validator->errors()->first('name'));
+    }
+
+    // タグ名が50文字を超える場合、バリデーションエラーになることを確認
+    public function test_store_tag_request_name_over_max_length_fail_validation(): void
+    {
+        $request = new StoreTagRequest();
+
+        $validator = Validator::make([
+            'name' => str_repeat('あ', 51),
+        ], $request->rules(), $request->messages());
+
+        $this->assertTrue($validator->fails());
+        $this->assertArrayHasKey('name', $validator->errors()->toArray());
+        $this->assertSame('タグ名は50文字以内で入力してください', $validator->errors()->first('name'));
     }
 
     /*
@@ -186,8 +200,11 @@ class WebRequestValidationTest extends TestCase
 
         $request->setRouteResolver(function () use ($tag) {
             return new class($tag) {
-                public function __construct(private Tag $tag)
+                private Tag $tag;
+
+                public function __construct(Tag $tag)
                 {
+                    $this->tag = $tag;
                 }
 
                 public function parameter(string $key): ?Tag
@@ -197,15 +214,17 @@ class WebRequestValidationTest extends TestCase
             };
         });
 
-        $validator = Validator::make([
-            'name' => '質問',
-        ], $request->rules(), $request->messages());
+        $validator = Validator::make(
+            $request->all(),
+            $request->rules(),
+            $request->messages()
+        );
 
         $this->assertFalse($validator->fails());
     }
 
     // 他のタグと同じ名前に更新しようとした場合に、uniqueエラーになることを確認
-    public function test_update_tag_request_duplicate_name_fails_validation(): void
+    public function test_update_tag_request_duplicate_name_fail_validation(): void
     {
         $currentTag = Tag::create([
             'name' => '質問',
@@ -221,8 +240,11 @@ class WebRequestValidationTest extends TestCase
 
         $request->setRouteResolver(function () use ($currentTag) {
             return new class($currentTag) {
-                public function __construct(private Tag $tag)
+                private Tag $tag;
+
+                public function __construct(Tag $tag)
                 {
+                    $this->tag = $tag;
                 }
 
                 public function parameter(string $key): ?Tag
@@ -232,9 +254,11 @@ class WebRequestValidationTest extends TestCase
             };
         });
 
-        $validator = Validator::make([
-            'name' => '要望',
-        ], $request->rules(), $request->messages());
+        $validator = Validator::make(
+            $request->all(),
+            $request->rules(),
+            $request->messages()
+        );
 
         $this->assertTrue($validator->fails());
         $this->assertArrayHasKey('name', $validator->errors()->toArray());

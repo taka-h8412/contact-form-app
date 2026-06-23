@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AdminSearchRequest;
 use App\Models\Category;
 use App\Models\Contact;
 use App\Models\Tag;
-use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function index(Request $request)
+    public function index(AdminSearchRequest $request)
     {
         // お問い合わせ一覧取得の土台
         $query = Contact::with(['category', 'tags']);
@@ -68,7 +68,7 @@ class AdminController extends Controller
         return redirect('/admin');
     }
 
-    public function export(Request $request)
+    public function export(AdminSearchRequest $request)
     {
         $query = Contact::with('category'); // 検索結果と同じ条件で絞り込めるように準備(検索の土台)
 
@@ -77,11 +77,11 @@ class AdminController extends Controller
             $keyword = $request->keyword;
 
             $query->where(function ($query) use ($keyword) {
-                $query->where('first_name', 'like', '%'.$keyword.'%')
-                    ->orWhere('last_name', 'like', '%'.$keyword.'%')
+                $query->where('first_name', 'like', '%' .$keyword.'%')
+                    ->orWhere('last_name', 'like', '%' .$keyword.'%')
                     ->orWhereRaw('CONCAT(first_name, last_name) LIKE ?', ['%' . $keyword . '%'])
                     ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ['%' . $keyword . '%'])
-                    ->orWhere('email', 'like', '%'.$keyword.'%');
+                    ->orWhere('email', 'like', '%' .$keyword.'%');
             });
         }
 

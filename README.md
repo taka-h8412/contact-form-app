@@ -36,7 +36,7 @@
 | -------------- | ---------------------------------- |
 | PHP            | 8.2                                |
 | Laravel        | 10.x                               |
-| データベース   | MySQL 8.0                          |
+| データベース   | MySQL 8.4                          |
 | Webサーバー    | Nginx                              |
 | フロントエンド | Vite / Tailwind CSS 3.4.0          |
 | 開発ツール     | Docker / Laravel Sail / phpMyAdmin |

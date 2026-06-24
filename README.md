@@ -75,7 +75,7 @@ erDiagram
         string tel
         string address
         string building
-        text detail
+        string detail
         timestamp created_at
         timestamp updated_at
     }
@@ -101,6 +101,8 @@ erDiagram
     tags ||--o{ contact_tag : "has many"
     contacts }o--o{ tags : "belongs to many"
 ```
+
+※ `contact_tag` テーブルは、`contact_id` と `tag_id` の組み合わせをユニーク制約としています。
 
 ---
 

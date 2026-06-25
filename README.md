@@ -158,6 +158,31 @@ DB_PASSWORD=password
 ./vendor/bin/sail up -d
 ```
 
+<details>
+<summary>M1/M2/M3 Mac（Apple Silicon）をお使いの方</summary>
+
+Apple Silicon搭載のMacで `./vendor/bin/sail up -d` を実行した際に、MySQLコンテナの起動で以下のようなエラーが発生する場合があります。
+
+```bash
+no matching manifest for linux/arm64/v8
+```
+
+その場合は、`compose.yaml` の `mysql` サービスに `platform: 'linux/amd64'` を追加してください。
+
+```yaml
+mysql:
+    image: "mysql/mysql-server:8.4"
+    platform: "linux/amd64"
+```
+
+追加後、再度コンテナを起動してください。
+
+```bash
+./vendor/bin/sail up -d
+```
+
+</details>
+
 ---
 
 ### 5. アプリケーションキーを生成

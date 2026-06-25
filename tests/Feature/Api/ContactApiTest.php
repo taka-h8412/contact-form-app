@@ -119,7 +119,7 @@ class ContactApiTest extends TestCase
             'created_at' => '2026-06-21 10:00:00',
         ]);
 
-        $response = $this->getJson('/api/v1/contacts?' . http_build_query([
+        $response = $this->getJson('/api/v1/contacts?'.http_build_query([
             'keyword' => '検索',
             'gender' => 1,
             'category_id' => $categoryA->id,
@@ -188,7 +188,7 @@ class ContactApiTest extends TestCase
 
         $contact->tags()->attach($tag->id);
 
-        $response = $this->getJson('/api/v1/contacts/' . $contact->id);
+        $response = $this->getJson('/api/v1/contacts/'.$contact->id);
 
         $response->assertStatus(200)
             ->assertJsonPath('data.id', $contact->id)
@@ -333,7 +333,7 @@ class ContactApiTest extends TestCase
             'detail' => '更新APIテストのお問い合わせ内容です。',
         ];
 
-        $response = $this->putJson('/api/v1/contacts/' . $contact->id, $payload);
+        $response = $this->putJson('/api/v1/contacts/'.$contact->id, $payload);
 
         $response->assertStatus(200)
             ->assertJsonPath('data.id', $contact->id)
@@ -382,7 +382,7 @@ class ContactApiTest extends TestCase
             'detail' => 'タグ更新確認用のお問い合わせ内容です。',
         ];
 
-        $response = $this->putJson('/api/v1/contacts/' . $contact->id, $payload);
+        $response = $this->putJson('/api/v1/contacts/'.$contact->id, $payload);
 
         $response->assertStatus(200);
 
@@ -421,7 +421,7 @@ class ContactApiTest extends TestCase
             'tel' => '090-1234-5678',
         ]);
 
-        $response = $this->putJson('/api/v1/contacts/' . $contact->id, $payload);
+        $response = $this->putJson('/api/v1/contacts/'.$contact->id, $payload);
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['tel'])
@@ -445,7 +445,7 @@ class ContactApiTest extends TestCase
 
         $contact->tags()->attach($tag->id);
 
-        $response = $this->deleteJson('/api/v1/contacts/' . $contact->id);
+        $response = $this->deleteJson('/api/v1/contacts/'.$contact->id);
 
         $response->assertStatus(204);
 
@@ -470,7 +470,7 @@ class ContactApiTest extends TestCase
             'tag_id' => $tag->id,
         ]);
 
-        $response = $this->deleteJson('/api/v1/contacts/' . $contact->id);
+        $response = $this->deleteJson('/api/v1/contacts/'.$contact->id);
 
         $response->assertStatus(204);
 

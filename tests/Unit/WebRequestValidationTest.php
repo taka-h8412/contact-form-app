@@ -35,7 +35,7 @@ class WebRequestValidationTest extends TestCase
     {
         $category = $this->createCategory();
 
-        $request = new StoreContactRequest();
+        $request = new StoreContactRequest;
 
         $validator = Validator::make([
             'first_name' => '山田',
@@ -55,7 +55,7 @@ class WebRequestValidationTest extends TestCase
     // 必須項目が空の場合に、requiredエラーになることを確認
     public function test_store_contact_request_required_fields_fail_validation(): void
     {
-        $request = new StoreContactRequest();
+        $request = new StoreContactRequest;
 
         $validator = Validator::make([
             'first_name' => '',
@@ -92,7 +92,7 @@ class WebRequestValidationTest extends TestCase
     // 不正な値・存在しないカテゴリ・文字数超過でバリデーションエラーになることを確認
     public function test_store_contact_request_invalid_values_fail_validation(): void
     {
-        $request = new StoreContactRequest();
+        $request = new StoreContactRequest;
 
         $validator = Validator::make([
             'first_name' => '山田',
@@ -126,7 +126,7 @@ class WebRequestValidationTest extends TestCase
     // タグ名の正常データが、バリデーションを通ることを確認
     public function test_store_tag_request_valid_data_pass_validation(): void
     {
-        $request = new StoreTagRequest();
+        $request = new StoreTagRequest;
 
         $validator = Validator::make([
             'name' => '新規タグ',
@@ -138,7 +138,7 @@ class WebRequestValidationTest extends TestCase
     // タグ名が空の場合に、requiredエラーになることを確認
     public function test_store_tag_request_name_required_fail_validation(): void
     {
-        $request = new StoreTagRequest();
+        $request = new StoreTagRequest;
 
         $validator = Validator::make([
             'name' => '',
@@ -152,7 +152,7 @@ class WebRequestValidationTest extends TestCase
     // タグ名が50文字を超える場合、バリデーションエラーになることを確認
     public function test_store_tag_request_name_over_max_length_fail_validation(): void
     {
-        $request = new StoreTagRequest();
+        $request = new StoreTagRequest;
 
         $validator = Validator::make([
             'name' => str_repeat('あ', 51),
@@ -170,7 +170,7 @@ class WebRequestValidationTest extends TestCase
             'name' => '質問',
         ]);
 
-        $request = new StoreTagRequest();
+        $request = new StoreTagRequest;
 
         $validator = Validator::make([
             'name' => '質問',
@@ -194,12 +194,13 @@ class WebRequestValidationTest extends TestCase
             'name' => '質問',
         ]);
 
-        $request = UpdateTagRequest::create('/admin/tags/' . $tag->id, 'PUT', [
+        $request = UpdateTagRequest::create('/admin/tags/'.$tag->id, 'PUT', [
             'name' => '質問',
         ]);
 
         $request->setRouteResolver(function () use ($tag) {
-            return new class($tag) {
+            return new class($tag)
+            {
                 private Tag $tag;
 
                 public function __construct(Tag $tag)
@@ -234,12 +235,13 @@ class WebRequestValidationTest extends TestCase
             'name' => '要望',
         ]);
 
-        $request = UpdateTagRequest::create('/admin/tags/' . $currentTag->id, 'PUT', [
+        $request = UpdateTagRequest::create('/admin/tags/'.$currentTag->id, 'PUT', [
             'name' => '要望',
         ]);
 
         $request->setRouteResolver(function () use ($currentTag) {
-            return new class($currentTag) {
+            return new class($currentTag)
+            {
                 private Tag $tag;
 
                 public function __construct(Tag $tag)

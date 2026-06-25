@@ -38,7 +38,7 @@ class ContactController extends Controller
         $tags = collect();
 
         // タグ名取得(未選択時はDB取得しない)
-        if (!empty($validated['tag_ids'])) {
+        if (! empty($validated['tag_ids'])) {
             $tags = Tag::whereIn('id', $validated['tag_ids'])->get();
         }
 

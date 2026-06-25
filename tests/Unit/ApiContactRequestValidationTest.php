@@ -42,7 +42,7 @@ class ApiContactRequestValidationTest extends TestCase
     {
         $category = $this->createCategory();
 
-        $request = new IndexContactRequest();
+        $request = new IndexContactRequest;
 
         $validator = Validator::make([
             'keyword' => '山田',
@@ -59,7 +59,7 @@ class ApiContactRequestValidationTest extends TestCase
     // 不正な検索条件を指定した場合に、各項目でバリデーションエラーになることを確認
     public function test_index_contact_request_invalid_data_fail_validation(): void
     {
-        $request = new IndexContactRequest();
+        $request = new IndexContactRequest;
 
         $validator = Validator::make([
             'gender' => 0,
@@ -100,7 +100,7 @@ class ApiContactRequestValidationTest extends TestCase
         $category = $this->createCategory();
         $tag = $this->createTag();
 
-        $request = new StoreContactRequest();
+        $request = new StoreContactRequest;
 
         $validator = Validator::make([
             'first_name' => 'API',
@@ -121,7 +121,7 @@ class ApiContactRequestValidationTest extends TestCase
     // 必須項目が空の場合に、requiredエラーになることを確認
     public function test_store_contact_request_required_fields_fail_validation(): void
     {
-        $request = new StoreContactRequest();
+        $request = new StoreContactRequest;
 
         $validator = Validator::make([
             'first_name' => '',
@@ -158,7 +158,7 @@ class ApiContactRequestValidationTest extends TestCase
     // 形式不正・存在しないID・文字数超過などでバリデーションエラーになることを確認
     public function test_store_contact_request_invalid_values_fail_validation(): void
     {
-        $request = new StoreContactRequest();
+        $request = new StoreContactRequest;
 
         $validator = Validator::make([
             'first_name' => 'API',

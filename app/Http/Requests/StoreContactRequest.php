@@ -13,9 +13,9 @@ class StoreContactRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        if (!$this->filled('tel')) {
+        if (! $this->filled('tel')) {
             $this->merge([
-                'tel' => $this->input('tel1') . $this->input('tel2') . $this->input('tel3'),
+                'tel' => $this->input('tel1').$this->input('tel2').$this->input('tel3'),
             ]);
         }
     }

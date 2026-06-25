@@ -32,7 +32,7 @@ class AdminSearchRequestValidationTest extends TestCase
     {
         $category = $this->createCategory();
 
-        $request = new AdminSearchRequest();
+        $request = new AdminSearchRequest;
 
         $validator = Validator::make([
             'keyword' => '山田',
@@ -47,7 +47,7 @@ class AdminSearchRequestValidationTest extends TestCase
     // 性別が不正な値の場合、バリデーションエラーになることを確認
     public function test_admin_search_request_invalid_gender_fail_validation(): void
     {
-        $request = new AdminSearchRequest();
+        $request = new AdminSearchRequest;
 
         $validator = Validator::make([
             'gender' => '9',

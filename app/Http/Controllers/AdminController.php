@@ -19,11 +19,11 @@ class AdminController extends Controller
             $keyword = $request->keyword;
 
             $query->where(function ($query) use ($keyword) {
-                $query->where('first_name', 'like', '%' . $keyword . '%')
-                    ->orWhere('last_name', 'like', '%' . $keyword . '%')
-                    ->orWhereRaw('CONCAT(first_name, last_name) LIKE ?', ['%' . $keyword . '%'])
-                    ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ['%' . $keyword . '%'])
-                    ->orWhere('email', 'like', '%' . $keyword . '%');
+                $query->where('first_name', 'like', '%'.$keyword.'%')
+                    ->orWhere('last_name', 'like', '%'.$keyword.'%')
+                    ->orWhereRaw('CONCAT(first_name, last_name) LIKE ?', ['%'.$keyword.'%'])
+                    ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ['%'.$keyword.'%'])
+                    ->orWhere('email', 'like', '%'.$keyword.'%');
             });
         }
 
@@ -77,11 +77,11 @@ class AdminController extends Controller
             $keyword = $request->keyword;
 
             $query->where(function ($query) use ($keyword) {
-                $query->where('first_name', 'like', '%' .$keyword.'%')
-                    ->orWhere('last_name', 'like', '%' .$keyword.'%')
-                    ->orWhereRaw('CONCAT(first_name, last_name) LIKE ?', ['%' . $keyword . '%'])
-                    ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ['%' . $keyword . '%'])
-                    ->orWhere('email', 'like', '%' .$keyword.'%');
+                $query->where('first_name', 'like', '%'.$keyword.'%')
+                    ->orWhere('last_name', 'like', '%'.$keyword.'%')
+                    ->orWhereRaw('CONCAT(first_name, last_name) LIKE ?', ['%'.$keyword.'%'])
+                    ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ['%'.$keyword.'%'])
+                    ->orWhere('email', 'like', '%'.$keyword.'%');
             });
         }
 
@@ -136,10 +136,10 @@ class AdminController extends Controller
                 // CSVに1行分のデータを書き込む
                 fputcsv($file, [
                     $contact->id,
-                    $contact->first_name . ' ' . $contact->last_name,
+                    $contact->first_name.' '.$contact->last_name,
                     $gender,
                     $contact->email,
-                    '="' . $contact->tel . '"',
+                    '="'.$contact->tel.'"',
                     $contact->address,
                     $contact->building,
                     $contact->category->content ?? '',

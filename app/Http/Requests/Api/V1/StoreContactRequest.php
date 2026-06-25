@@ -73,7 +73,7 @@ class StoreContactRequest extends FormRequest
 
         // 最初の1個を表示して、件数を付与
         if (count($messages) > 1) {
-            $message .= ' (and ' . (count($messages) - 1) . ' more errors)';
+            $message .= ' (and '.(count($messages) - 1).' more errors)';
         }
 
         throw new HttpResponseException(response()->json([

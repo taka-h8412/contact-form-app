@@ -2,8 +2,6 @@
 
 namespace Tests\Feature\Web;
 
-use App\Models\Category;
-use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

@@ -19,9 +19,9 @@ class ContactController extends Controller
             $keyword = $request->input('keyword');
 
             $query->where(function ($query) use ($keyword) {
-                $query->where('first_name', 'like', '%' . $keyword . '%')
-                    ->orWhere('last_name', 'like', '%' . $keyword . '%')
-                    ->orWhere('email', 'like', '%' . $keyword . '%');
+                $query->where('first_name', 'like', '%'.$keyword.'%')
+                    ->orWhere('last_name', 'like', '%'.$keyword.'%')
+                    ->orWhere('email', 'like', '%'.$keyword.'%');
             });
         }
 
@@ -54,7 +54,7 @@ class ContactController extends Controller
 
         $contact = Contact::create($validated);
 
-        if (!empty($tagIds)) {
+        if (! empty($tagIds)) {
             $contact->tags()->attach($tagIds);
         }
 

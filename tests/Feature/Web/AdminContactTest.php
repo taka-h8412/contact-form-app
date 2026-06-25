@@ -75,7 +75,7 @@ class AdminContactTest extends TestCase
 
         $otherContact->tags()->attach($otherTag->id);
 
-        $response = $this->actingAs($user)->get('/admin?' . http_build_query([
+        $response = $this->actingAs($user)->get('/admin?'.http_build_query([
             'keyword' => '山田',
             'gender' => 1,
             'category_id' => $targetCategory->id,
@@ -145,7 +145,7 @@ class AdminContactTest extends TestCase
 
         $contact->tags()->attach($tag->id);
 
-        $response = $this->actingAs($user)->get('/admin/contacts/' . $contact->id);
+        $response = $this->actingAs($user)->get('/admin/contacts/'.$contact->id);
 
         $response->assertStatus(200);
         $response->assertViewIs('admin.show');
@@ -180,7 +180,7 @@ class AdminContactTest extends TestCase
             'email' => 'delete@example.com',
         ]);
 
-        $response = $this->actingAs($user)->delete('/admin/contacts/' . $contact->id);
+        $response = $this->actingAs($user)->delete('/admin/contacts/'.$contact->id);
 
         $response->assertRedirect('/admin');
 

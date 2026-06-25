@@ -18,7 +18,7 @@ class AdminAccessTest extends TestCase
     */
 
     // 未認証ユーザーが管理画面へアクセスした場合、ログイン画面へリダイレクトされることを確認
-    public function test_guest_user_is_redirected_to_login_when_accessing_admin_page(): void
+    public function test_未ログインでは管理画面にアクセスできない(): void
     {
         $response = $this->get('/admin');
 
@@ -26,7 +26,7 @@ class AdminAccessTest extends TestCase
     }
 
     // 認証済みユーザーが管理画面を表示できることを確認
-    public function test_authenticated_user_can_access_admin_page(): void
+    public function test_ログイン済みユーザーは管理画面にアクセスできる(): void
     {
         $user = User::factory()->create();
 

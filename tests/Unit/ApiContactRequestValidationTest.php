@@ -38,7 +38,7 @@ class ApiContactRequestValidationTest extends TestCase
     */
 
     // API一覧検索で使用できる検索条件が、正常にバリデーションを通ることを確認
-    public function test_index_contact_request_valid_data_pass_validation(): void
+    public function test_api検索の正しい条件はバリデーションを通過する(): void
     {
         $category = $this->createCategory();
 
@@ -57,7 +57,7 @@ class ApiContactRequestValidationTest extends TestCase
     }
 
     // 不正な検索条件を指定した場合に、各項目でバリデーションエラーになることを確認
-    public function test_index_contact_request_invalid_data_fail_validation(): void
+    public function test_api検索の不正な条件はバリデーションエラーになる(): void
     {
         $request = new IndexContactRequest;
 
@@ -95,7 +95,7 @@ class ApiContactRequestValidationTest extends TestCase
     */
 
     // API作成時に必要な正常データ一式が、バリデーションを通ることを確認
-    public function test_store_contact_request_valid_data_pass_validation(): void
+    public function test_apiお問い合わせ作成の正しい入力はバリデーションを通過する(): void
     {
         $category = $this->createCategory();
         $tag = $this->createTag();
@@ -119,7 +119,7 @@ class ApiContactRequestValidationTest extends TestCase
     }
 
     // 必須項目が空の場合に、requiredエラーになることを確認
-    public function test_store_contact_request_required_fields_fail_validation(): void
+    public function test_apiお問い合わせ作成の必須項目不足はバリデーションエラーになる(): void
     {
         $request = new StoreContactRequest;
 
@@ -156,7 +156,7 @@ class ApiContactRequestValidationTest extends TestCase
     }
 
     // 形式不正・存在しないID・文字数超過などでバリデーションエラーになることを確認
-    public function test_store_contact_request_invalid_values_fail_validation(): void
+    public function test_apiお問い合わせ作成の不正な値はバリデーションエラーになる(): void
     {
         $request = new StoreContactRequest;
 

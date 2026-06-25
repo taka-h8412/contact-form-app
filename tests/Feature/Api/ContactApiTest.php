@@ -52,7 +52,7 @@ class ContactApiTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function test_contacts_can_list(): void
+    public function test_apiでお問い合わせ一覧を取得できる(): void
     {
         $category = $this->createCategory();
         $tag = $this->createTag();
@@ -96,7 +96,7 @@ class ContactApiTest extends TestCase
             ->assertJsonPath('data.0.tags.0.name', '質問');
     }
 
-    public function test_contacts_can_filter_keyword_gender_category_date(): void
+    public function test_apiでキーワード性別カテゴリ日付検索ができる(): void
     {
         $categoryA = $this->createCategory('商品のお届けについて');
         $categoryB = $this->createCategory('その他');
@@ -132,7 +132,7 @@ class ContactApiTest extends TestCase
             ->assertJsonPath('data.0.email', 'search@example.com');
     }
 
-    public function test_contacts_index_return_422_when_gender_invalid(): void
+    public function test_api一覧検索で性別が不正なら422を返す(): void
     {
         $response = $this->getJson('/api/v1/contacts?gender=0');
 
@@ -141,7 +141,7 @@ class ContactApiTest extends TestCase
             ->assertJsonPath('errors.gender.0', '性別の値が不正です');
     }
 
-    public function test_contacts_index_return_422_when_category_not_exist(): void
+    public function test_api一覧検索で存在しないカテゴリなら422を返す(): void
     {
         $response = $this->getJson('/api/v1/contacts?category_id=999999');
 
@@ -150,7 +150,7 @@ class ContactApiTest extends TestCase
             ->assertJsonPath('errors.category_id.0', '選択されたカテゴリーが存在しません');
     }
 
-    public function test_contacts_can_paginate(): void
+    public function test_apiでお問い合わせ一覧をページネーションできる(): void
     {
         $category = $this->createCategory();
 
@@ -173,7 +173,7 @@ class ContactApiTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function test_contact_can_show(): void
+    public function test_apiでお問い合わせ詳細を取得できる(): void
     {
         $category = $this->createCategory();
         $tag = $this->createTag();
@@ -199,7 +199,7 @@ class ContactApiTest extends TestCase
             ->assertJsonPath('data.tags.0.name', '質問');
     }
 
-    public function test_contact_show_return_404_when_contact_not_exist(): void
+    public function test_api詳細取得で存在しないお問い合わせなら404を返す(): void
     {
         $response = $this->getJson('/api/v1/contacts/999999');
 
@@ -215,7 +215,7 @@ class ContactApiTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function test_contact_can_create(): void
+    public function test_apiでお問い合わせを作成できる(): void
     {
         $payload = $this->validContactPayload();
 
@@ -245,7 +245,7 @@ class ContactApiTest extends TestCase
         ]);
     }
 
-    public function test_contact_create_return_422_when_validation_fail(): void
+    public function test_api作成で入力不備があれば422を返す(): void
     {
         $response = $this->postJson('/api/v1/contacts', [
             'first_name' => '',
@@ -279,7 +279,7 @@ class ContactApiTest extends TestCase
             ->assertJsonPath('errors.detail.0', 'お問い合わせ内容を入力してください');
     }
 
-    public function test_contact_create_return_422_when_tag_not_exist(): void
+    public function test_api作成で存在しないタグなら422を返す(): void
     {
         $payload = $this->validContactPayload([
             'tag_ids' => [999999],
@@ -302,7 +302,7 @@ class ContactApiTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function test_contact_can_update(): void
+    public function test_apiでお問い合わせを更新できる(): void
     {
         $oldCategory = $this->createCategory('商品のお届けについて');
         $oldTag = $this->createTag('質問');
@@ -357,7 +357,7 @@ class ContactApiTest extends TestCase
         ]);
     }
 
-    public function test_contact_update_syncs_tags(): void
+    public function test_api更新でタグを同期できる(): void
     {
         $category = $this->createCategory();
         $oldTag = $this->createTag('質問');
@@ -397,7 +397,7 @@ class ContactApiTest extends TestCase
         ]);
     }
 
-    public function test_contact_update_return_404_when_contact_not_exist(): void
+    public function test_api更新で存在しないお問い合わせなら404を返す(): void
     {
         $payload = $this->validContactPayload();
 
@@ -409,7 +409,7 @@ class ContactApiTest extends TestCase
             ]);
     }
 
-    public function test_contact_update_return_422_when_validation_fail(): void
+    public function test_api更新で入力不備があれば422を返す(): void
     {
         $category = $this->createCategory();
 
@@ -434,7 +434,7 @@ class ContactApiTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function test_contact_can_delete(): void
+    public function test_apiでお問い合わせを削除できる(): void
     {
         $category = $this->createCategory();
         $tag = $this->createTag();
@@ -454,7 +454,7 @@ class ContactApiTest extends TestCase
         ]);
     }
 
-    public function test_contact_delete_removes_contact_tag(): void
+    public function test_api削除で中間テーブルのタグ紐付けも削除される(): void
     {
         $category = $this->createCategory();
         $tag = $this->createTag();
@@ -480,7 +480,7 @@ class ContactApiTest extends TestCase
         ]);
     }
 
-    public function test_contact_delete_return_404_when_contact_not_exist(): void
+    public function test_api削除で存在しないお問い合わせなら404を返す(): void
     {
         $response = $this->deleteJson('/api/v1/contacts/999999');
 

@@ -28,7 +28,7 @@ class AdminSearchRequestValidationTest extends TestCase
     */
 
     // キーワード・性別・カテゴリ・日付フィルタがバリデーションを通ることを確認
-    public function test_admin_search_request_valid_filter_pass_validation(): void
+    public function test_管理画面検索の正しい条件はバリデーションを通過する(): void
     {
         $category = $this->createCategory();
 
@@ -45,7 +45,7 @@ class AdminSearchRequestValidationTest extends TestCase
     }
 
     // 性別が不正な値の場合、バリデーションエラーになることを確認
-    public function test_admin_search_request_invalid_gender_fail_validation(): void
+    public function test_管理画面検索で不正な性別はバリデーションエラーになる(): void
     {
         $request = new AdminSearchRequest;
 

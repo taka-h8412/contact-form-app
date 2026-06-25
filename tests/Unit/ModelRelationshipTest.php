@@ -20,7 +20,7 @@ class ModelRelationshipTest extends TestCase
     */
 
     // 1つのカテゴリから、紐づく複数のお問い合わせを取得できることを確認
-    public function test_category_can_retrieve_multiple_contacts(): void
+    public function test_カテゴリは複数のお問い合わせを取得できる(): void
     {
         $category = Category::create([
             'content' => '商品のお届けについて',
@@ -40,7 +40,7 @@ class ModelRelationshipTest extends TestCase
     */
 
     // 1つのお問い合わせが特定のカテゴリに属していることを確認
-    public function test_contact_can_retrieve_its_category(): void
+    public function test_お問い合わせは所属カテゴリを取得できる(): void
     {
         $category = Category::create([
             'content' => '商品トラブル',
@@ -54,7 +54,7 @@ class ModelRelationshipTest extends TestCase
     }
 
     // 1つのお問い合わせに複数のタグをsyncできることを確認
-    public function test_contact_can_sync_multiple_tags(): void
+    public function test_お問い合わせは複数タグを同期できる(): void
     {
         $category = Category::create([
             'content' => 'その他',
@@ -97,7 +97,7 @@ class ModelRelationshipTest extends TestCase
     */
 
     // 1つのタグが中間テーブルを介して複数のお問い合わせに紐づくことを確認
-    public function test_tag_can_retrieve_multiple_contacts(): void
+    public function test_タグは複数のお問い合わせを取得できる(): void
     {
         $category = Category::create([
             'content' => 'その他',

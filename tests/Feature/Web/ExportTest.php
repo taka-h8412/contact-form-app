@@ -34,7 +34,7 @@ class ExportTest extends TestCase
     */
 
     // ログイン済みユーザーがフィルタ条件付きでCSVをダウンロードできることを確認
-    public function test_authenticated_user_can_export_filter_contacts_csv(): void
+    public function test_ログイン済みユーザーは検索条件付きでcsv出力できる(): void
     {
         $user = $this->createUser();
 
@@ -87,7 +87,7 @@ class ExportTest extends TestCase
     }
 
     // フィルタ未指定時、CSVが新着順で出力されることを確認
-    public function test_contacts_csv_is_export_in_latest_order_without_filter(): void
+    public function test_検索条件なしのcsvは新しい順で出力される(): void
     {
         $user = $this->createUser();
 
@@ -116,14 +116,14 @@ class ExportTest extends TestCase
 
         $csv = $response->streamedContent();
 
+        $newPosition = strpos($csv, '新しい 問い合わせ');
+        $oldPosition = strpos($csv, '古い 問い合わせ');
+
         // CSV内に両方の問い合わせが含まれていることを確認
-        $this->assertStringContainsString('新しい 問い合わせ', $csv);
-        $this->assertStringContainsString('古い 問い合わせ', $csv);
+        $this->assertNotFalse($newPosition);
+        $this->assertNotFalse($oldPosition);
 
         // CSV内で「新しい 問い合わせ」が「古い 問い合わせ」より前にあることを確認
-        $this->assertLessThan(
-            strpos($csv, '古い 問い合わせ'),
-            strpos($csv, '新しい 問い合わせ')
-        );
+        $this->assertLessThan($oldPosition, $newPosition);
     }
 }

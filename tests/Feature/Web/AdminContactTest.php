@@ -43,7 +43,7 @@ class AdminContactTest extends TestCase
     */
 
     // 管理画面でキーワード・性別・カテゴリ・日付フィルタが機能することを確認
-    public function test_admin_contact_list_can_filter_by_keyword_gender_category_and_date(): void
+    public function test_管理画面でお問い合わせを検索できる(): void
     {
         $user = $this->createUser();
 
@@ -96,7 +96,7 @@ class AdminContactTest extends TestCase
     }
 
     // 管理画面のお問い合わせ一覧が7件ごとにページネーションされることを確認
-    public function test_admin_contact_list_is_paginated_by_seven_items(): void
+    public function test_管理画面のお問い合わせ一覧は7件ずつ表示される(): void
     {
         $user = $this->createUser();
 
@@ -124,7 +124,7 @@ class AdminContactTest extends TestCase
     */
 
     // お問い合わせ詳細ページが表示され、カテゴリ・タグを含む詳細情報が表示されることを確認
-    public function test_admin_contact_detail_page_can_be_displayed(): void
+    public function test_管理画面でお問い合わせ詳細を表示できる(): void
     {
         $user = $this->createUser();
 
@@ -169,7 +169,7 @@ class AdminContactTest extends TestCase
     */
 
     // お問い合わせを削除でき、削除後に /admin へリダイレクトされることを確認
-    public function test_admin_contact_can_be_deleted_and_redirects_to_admin_page(): void
+    public function test_管理画面でお問い合わせを削除して一覧へ戻る(): void
     {
         $user = $this->createUser();
 

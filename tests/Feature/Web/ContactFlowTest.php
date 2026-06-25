@@ -58,7 +58,7 @@ class ContactFlowTest extends TestCase
     */
 
     // お問い合わせフォーム入力ページが表示され、categories・tags がビューに渡されることを確認
-    public function test_contact_input_page_can_display(): void
+    public function test_お問い合わせ入力ページを表示できる(): void
     {
         $category = $this->createCategory();
         $tag = $this->createTag();
@@ -75,7 +75,7 @@ class ContactFlowTest extends TestCase
     }
 
     // サンクスページが正常に表示されることを確認
-    public function test_thanks_page_can_displayed(): void
+    public function test_サンクスページを表示できる(): void
     {
         $response = $this->get('/thanks');
 
@@ -92,7 +92,7 @@ class ContactFlowTest extends TestCase
     */
 
     // 正常な入力内容で確認ページが表示され、入力内容・カテゴリ名・タグ名が表示されることを確認
-    public function test_contact_confirm_page_can_display_with_valid_input(): void
+    public function test_正しい入力で確認ページを表示できる(): void
     {
         $payload = $this->validContactPayload();
 
@@ -114,7 +114,7 @@ class ContactFlowTest extends TestCase
     }
 
     // 入力内容に不備がある場合、確認ページへ進めずバリデーションエラーになることを確認
-    public function test_contact_confirm_returns_validation_errors_when_input_is_invalid(): void
+    public function test_不正な入力では確認ページでバリデーションエラーになる(): void
     {
         $response = $this->from('/')->post('/contacts/confirm', [
             'first_name' => '',
@@ -149,7 +149,7 @@ class ContactFlowTest extends TestCase
     */
 
     // 正常な入力内容でお問い合わせが保存され、タグも紐づき、サンクスページへリダイレクトされることを確認
-    public function test_contact_can_store_and_redirect_to_thanks_page(): void
+    public function test_お問い合わせを登録してサンクスページへ遷移する(): void
     {
         $payload = $this->validContactPayload();
 
@@ -178,7 +178,7 @@ class ContactFlowTest extends TestCase
     }
 
     // 保存時に入力内容に不備がある場合、保存されずバリデーションエラーになることを確認
-    public function test_contact_store_return_validation_error_when_input_is_invalid(): void
+    public function test_不正な入力ではお問い合わせ登録時にバリデーションエラーになる(): void
     {
         $response = $this->from('/contacts/confirm')->post('/contacts', [
             'first_name' => '',

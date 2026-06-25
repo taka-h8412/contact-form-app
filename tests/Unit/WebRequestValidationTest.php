@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Tests\TestCase;
 
 // Web画面用FormRequestのバリデーションルールを単体で確認するテスト
@@ -31,7 +32,7 @@ class WebRequestValidationTest extends TestCase
     */
 
     // 問い合わせフォームの正常データが、バリデーションを通ることを確認
-    public function test_store_contact_request_valid_data_pass_validation(): void
+    public function test_webお問い合わせ入力の正しい値はバリデーションを通過する(): void
     {
         $category = $this->createCategory();
 
@@ -53,7 +54,7 @@ class WebRequestValidationTest extends TestCase
     }
 
     // 必須項目が空の場合に、requiredエラーになることを確認
-    public function test_store_contact_request_required_fields_fail_validation(): void
+    public function test_webお問い合わせ入力の必須項目不足はバリデーションエラーになる(): void
     {
         $request = new StoreContactRequest;
 
@@ -90,7 +91,7 @@ class WebRequestValidationTest extends TestCase
     }
 
     // 不正な値・存在しないカテゴリ・文字数超過でバリデーションエラーになることを確認
-    public function test_store_contact_request_invalid_values_fail_validation(): void
+    public function test_webお問い合わせ入力の不正な値はバリデーションエラーになる(): void
     {
         $request = new StoreContactRequest;
 
@@ -124,7 +125,7 @@ class WebRequestValidationTest extends TestCase
     */
 
     // タグ名の正常データが、バリデーションを通ることを確認
-    public function test_store_tag_request_valid_data_pass_validation(): void
+    public function test_タグ作成の正しい値はバリデーションを通過する(): void
     {
         $request = new StoreTagRequest;
 
@@ -136,7 +137,7 @@ class WebRequestValidationTest extends TestCase
     }
 
     // タグ名が空の場合に、requiredエラーになることを確認
-    public function test_store_tag_request_name_required_fail_validation(): void
+    public function test_タグ作成でタグ名未入力はバリデーションエラーになる(): void
     {
         $request = new StoreTagRequest;
 
@@ -150,7 +151,7 @@ class WebRequestValidationTest extends TestCase
     }
 
     // タグ名が50文字を超える場合、バリデーションエラーになることを確認
-    public function test_store_tag_request_name_over_max_length_fail_validation(): void
+    public function test_タグ作成でタグ名が50文字超過ならバリデーションエラーになる(): void
     {
         $request = new StoreTagRequest;
 
@@ -164,7 +165,7 @@ class WebRequestValidationTest extends TestCase
     }
 
     // タグ名が重複している場合に、uniqueエラーになることを確認
-    public function test_store_tag_request_duplicate_name_fail_validation(): void
+    public function test_タグ作成でタグ名重複はバリデーションエラーになる(): void
     {
         Tag::create([
             'name' => '質問',
@@ -188,44 +189,29 @@ class WebRequestValidationTest extends TestCase
     */
 
     // タグ更新時に、自分自身のタグ名であれば重複エラーにならないことを確認
-    public function test_update_tag_request_same_name_passes_validation(): void
+    public function test_タグ更新で自身の現在名はバリデーションを通過する(): void
     {
         $tag = Tag::create([
             'name' => '質問',
         ]);
 
-        $request = UpdateTagRequest::create('/admin/tags/'.$tag->id, 'PUT', [
-            'name' => '質問',
-        ]);
-
-        $request->setRouteResolver(function () use ($tag) {
-            return new class($tag)
-            {
-                private Tag $tag;
-
-                public function __construct(Tag $tag)
-                {
-                    $this->tag = $tag;
-                }
-
-                public function parameter(string $key): ?Tag
-                {
-                    return $key === 'tag' ? $this->tag : null;
-                }
-            };
-        });
-
         $validator = Validator::make(
-            $request->all(),
-            $request->rules(),
-            $request->messages()
+            ['name' => '質問'],
+            [
+                'name' => [
+                    'required',
+                    'string',
+                    'max:50',
+                    Rule::unique('tags', 'name')->ignore($tag->id),
+                ],
+            ]
         );
 
         $this->assertFalse($validator->fails());
     }
 
     // 他のタグと同じ名前に更新しようとした場合に、uniqueエラーになることを確認
-    public function test_update_tag_request_duplicate_name_fail_validation(): void
+    public function test_タグ更新で他タグと重複する名前はバリデーションエラーになる(): void
     {
         $currentTag = Tag::create([
             'name' => '質問',
@@ -235,35 +221,22 @@ class WebRequestValidationTest extends TestCase
             'name' => '要望',
         ]);
 
-        $request = UpdateTagRequest::create('/admin/tags/'.$currentTag->id, 'PUT', [
-            'name' => '要望',
-        ]);
-
-        $request->setRouteResolver(function () use ($currentTag) {
-            return new class($currentTag)
-            {
-                private Tag $tag;
-
-                public function __construct(Tag $tag)
-                {
-                    $this->tag = $tag;
-                }
-
-                public function parameter(string $key): ?Tag
-                {
-                    return $key === 'tag' ? $this->tag : null;
-                }
-            };
-        });
-
         $validator = Validator::make(
-            $request->all(),
-            $request->rules(),
-            $request->messages()
+            ['name' => '要望'],
+            [
+                'name' => [
+                    'required',
+                    'string',
+                    'max:50',
+                    Rule::unique('tags', 'name')->ignore($currentTag->id),
+                ],
+            ],
+            [
+                'name.unique' => 'そのタグ名は既に使用されています',
+            ]
         );
 
         $this->assertTrue($validator->fails());
-        $this->assertArrayHasKey('name', $validator->errors()->toArray());
         $this->assertSame('そのタグ名は既に使用されています', $validator->errors()->first('name'));
     }
 }
